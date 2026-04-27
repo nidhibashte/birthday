@@ -1,0 +1,460 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Birthday Website</title>
+<link href="https://fonts.googleapis.com/css2?family=Mistral&family=Georgia&family=Times+New+Roman&display=swap" rel="stylesheet">
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    width: 1550px;
+    height: 800px;
+    overflow: hidden;
+    font-family: 'Georgia', serif;
+    background: #fff0f5;
+  }
+
+  /* ── PAGES ── */
+  .page {
+    position: absolute;
+    top: 0; left: 0;
+    width: 100vw; height: 100vh;
+    display: none;
+  }
+  .page.active { display: block; }
+
+  /* ── SHARED BUTTON STYLE ── */
+  .btn {
+    cursor: pointer;
+    border: none;
+    font-weight: bold;
+    background: #fff0f5;
+    color: black;
+    padding: 8px 20px;
+    font-size: 16px;
+    font-family: 'Segoe UI', sans-serif;
+  }
+  .btn-pink {
+    background: #ff4d6d;
+    color: black;
+  }
+
+  /* ══════════════════════════════
+     PAGE 1 — BIRTHDAY PAGE
+  ══════════════════════════════ */
+  #page1, #page2, #page3 {
+    width: 1550px;
+    height: 800px;
+  }
+  
+  #page1 .bg {
+    position: absolute; top:0; left:0;
+    width:100%; height:100%;
+    object-fit: cover;
+  }
+  #page1 .content {
+    position: absolute; top:0; left:0;
+    width:100%; height:100%;
+  }
+
+  /* Profile image — slides DOWN from -400 to y=260 */
+  #p1-img {
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+    top: -400px;
+    width: 400px; height: 400px;
+    object-fit: cover;
+    background: white;
+  }
+  #p1-img.placeholder {
+    background: #ffb6c1;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 80px;
+  }
+
+  /* Title text — slides UP from y=900 to y=540 */
+  #p1-text {
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+    top: 900px;
+    background: #fff0f5;
+    font-family: 'Mistral', cursive;
+    font-size: 70px;
+    font-weight: bold;
+    text-align: center;
+    white-space: nowrap;
+    padding: 10px 20px;
+  }
+
+  /* Next button */
+  #p1-next {
+    position: absolute;
+    left: 50%; bottom: 80px;
+    transform: translateX(-50%);
+    font-size: 16px;
+  }
+
+  /* ══════════════════════════════
+     PAGE 2 — GIFT PAGE
+  ══════════════════════════════ */
+  #page2 {
+    background: #fff0f5;
+  }
+
+  #p2-img {
+    position: absolute;
+    left: 510px; top: 80px;
+    width: 500px; height: 480px;
+    object-fit: cover;
+    background: white;
+  }
+  #p2-img.placeholder {
+    background: #ffb6c1;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 80px;
+  }
+
+  #p2-text {
+    position: absolute;
+    left: 470px; top: 550px;
+    width: 600px; height: 50px;
+    text-align: center;
+    font-family: 'Times New Roman', serif;
+    font-size: 24px;
+    font-weight: bold;
+    background: #fff0f5;
+    line-height: 50px;
+  }
+
+  /* Button row */
+  #p2-btnrow {
+    position: absolute;
+    left: 50%; bottom: 150px;
+    transform: translateX(-50%);
+    display: flex; gap: 20px;
+  }
+   
+  #p2-back{
+    position: fixed;
+    right: 40px;
+    bottom: 25px;
+    z-index: 999;
+    background: #fff0f5;
+    color: black;
+    font-size: 16px;
+    font-weight: bold;
+    font-family: 'Segoe UI', sans-serif;
+    padding: 8px 20px;
+    border: none;
+    cursor: pointer;
+
+  }
+
+  /* Bottom pink strip */
+  #p2-bottom {
+    position: absolute;
+    bottom: 0; left: 0;
+    width: 100%; height: 60px;
+    background: #fce4ec;
+  }
+
+  /* ── POPUP ── */
+  #popup-overlay {
+    display: none;
+    position: fixed;
+    top:0; left:0; width:100%; height:100%;
+    background: rgba(0,0,0,0.4);
+    z-index: 999;
+    align-items: center; justify-content: center;
+  }
+  #popup-overlay.show { display: flex; }
+  #popup-box {
+    background: #fff0f5;
+    width: 480px; height: 320px;
+    border-radius: 8px;
+    display: flex; flex-direction: column;
+    align-items: center; justify-content: center;
+    gap: 20px;
+    padding: 20px;
+  }
+  #popup-box p {
+    font-family: 'Segoe UI', sans-serif;
+    font-size: 18px;
+    font-weight: bold;
+    color: #c9184a;
+    text-align: center;
+  }
+  #popup-ok {
+    background: #ff4d6d;
+    color: white;
+    font-size: 13px;
+    font-weight: bold;
+    border: none;
+    padding: 6px 20px;
+    cursor: pointer;
+    border-radius: 4px;
+    font-family: 'Segoe UI', sans-serif;
+  }
+
+  /* ══════════════════════════════
+     PAGE 3 — LETTER PAGE
+  ══════════════════════════════ */
+  #page3 {
+    background: #fce4ec;
+  }
+  #p3-bg {
+    position: absolute; top:0; left:0;
+    width:100%; height:100%;
+    object-fit: cover;
+  }
+  #p3-letter {
+    position: absolute;
+    left: 385px; top: 20px;
+    width: 600px; height: 530px;
+    background: white;
+    font-family: 'Georgia', serif;
+    font-size: 18px;
+    color: #2b2b2b;
+    line-height: 1.6;
+    padding: 10px;
+    overflow: hidden;
+  }
+  #p3-back {
+    position: absolute;
+    left: 50%; bottom: 80px;
+    transform: translateX(-50%);
+    width: 200px; height: 40px;
+    background: #fff0f5;
+    color: black;
+    font-family: 'Poppins', sans-serif;
+    font-size: 12px;
+    font-weight: bold;
+    cursor: pointer;
+    border: none;
+  }
+
+  /* ── IMAGE UPLOAD HELPER ── */
+  #upload-panel {
+    position: fixed;
+    bottom: 10px; right: 10px;
+    background: rgba(255,255,255,0.92);
+    border: 1px solid #ffb6c1;
+    border-radius: 10px;
+    padding: 12px 16px;
+    font-family: 'Segoe UI', sans-serif;
+    font-size: 12px;
+    z-index: 9999;
+    max-width: 260px;
+  }
+  #upload-panel h4 { margin-bottom: 8px; color: #c9184a; font-size: 13px; }
+  #upload-panel label { display: block; margin: 5px 0 2px; font-weight: bold; }
+  #upload-panel input[type=file] { width: 100%; font-size: 11px; }
+  #upload-panel small { color: #888; display: block; margin-top: 6px; }
+</style>
+</head>
+<body>
+
+<!-- ════════ PAGE 1 ════════ -->
+<div class="page active" id="page1">
+  <!-- background image -->
+  <img id="p1-bg" class="bg" src="bg%20img1.jpg" alt=""style="display:block"/>
+  <div id="p1-bg-fallback" style="position:absolute;top:0;left:0;width:100%;height:100%;background:#ffe0f0;display: none;"></div>
+
+  <div class="content">
+    <!-- Profile image (slides down) -->
+    <img id="p1-img" src="img3.jpeg" />
+
+    <!-- Birthday text (slides up) -->
+    <div id="p1-text">HAPPYYY BIRTHDAYYY<br>OM GOSAVI 🤍</div>
+
+    <!-- Next button -->
+    <button class="btn" id="p1-next" onclick="goTo(2)">NEXT ➜</button>
+  </div>
+</div>
+
+<!-- ════════ PAGE 2 ════════ -->
+<div class="page" id="page2">
+  <div id="p2-bottom"></div>
+
+  <!-- Cat image -->
+ <img id="p2-img" src="cat.jpg" />
+
+  <!-- Caption -->
+  <div id="p2-text">THIS IS FOR YOUUU !!</div>
+
+  <!-- Button row -->
+  <div id="p2-btnrow">
+    <button class="btn btn-pink" onclick="showPopup()">◀ CAKE</button>
+    <button class="btn btn-pink" onclick="goTo(3)">BIRTHDAY NOTE ➜</button>
+  </div>
+
+  <!-- Back button bottom-right -->
+  <button class="btn" id="p2-back" onclick="goTo(1)">◄ BACK</button>
+</div>
+
+<!-- ════════ PAGE 3 ════════ -->
+<div class="page" id="page3">
+  <img id="p3-bg" class="bg" src="letter.jpg" alt="" style="display:block"/>
+  <div id="p3-bg-fallback" style="position:absolute;top:0;left:0;width:100%;height:100%;background:white;display: none;"></div>
+
+  <div id="p3-letter">
+Happyyy Birthdayyy OM🤍..<br>
+May God Bless youu ✨..<br>
+I'll Pray ki tujha aajcha divas khuppp changla jaudee..<br>
+Tujhya kadhun khup ghosti shikli mi jasa ki self obsession,<br>
+mgh cracking lame jokes(iykyk)😅<br>
+Bt that's the main part na karan aapn nehmi roast ach karat<br>
+asto ekmekana bcoz serious rahna is not our cup of tea ..<br>
+Nd Yess!! Everyone should have a friend like youu (Not youu😂)<br>
+Ik mi rude boltey( kadhi kadhi😌) bt tujhyashi<br>
+mi asach bolnar(maja aata hai)..<br>
+Tu pn mala traas detos so mi pn traas dete (Balance<br>
+asl pahije na mhanun) Koii naa sehlenge 😅..<br>
+But on a serious note.. Gratefull to have a friend like youuu🤍<br>
+I hope our friendship stays the samee..<br>
+Baaki tuu bestt h (maybee😌)<br>
+Chal chal hawa yeudee aata .. Enjoyyy kr mastt ..<br>
+Bhetu lvkarch.. Phirse ekbaarr<br>
+Happpyy walaa Birthdayyy Chaman Ghatula😜
+  </div>
+
+  <button id="p3-back" onclick="goTo(2)">◄ BACK</button>
+</div>
+
+<!-- ════════ GIFT POPUP ════════ -->
+<div id="popup-overlay">
+  <div id="popup-box">
+    <img src="images1.jpg" style="
+        width: 180px;
+        height: 180px;
+        object-fit: cover;
+        border-radius:0px;
+    "/>
+    <p> GOAD KAMI KHAA JARA...</p>
+    <button id="popup-ok" onclick="closePopup()">OK</button>
+  </div>
+
+
+
+<script>
+  // ── Audio ──
+   let audio = new Audio("birthday_song.wav");
+   audio.loop = true;
+
+  function loadAudio(input) {
+    const file = input.files[0];
+    if (!file) return;
+    if (audio) { audio.pause(); audio = null; }
+    audio = new Audio(URL.createObjectURL(file));
+    audio.loop = true;
+  }
+
+  function playSong() {
+    if (audio) { audio.currentTime = 0; audio.play(); }
+  }
+
+  function stopSong() {
+    if (audio) { audio.pause(); audio.currentTime = 0; }
+  }
+
+  // ── Image loaders ──
+  function loadImg(input, imgId, fallbackId) {
+    const file = input.files[0];
+    if (!file) return;
+    const url = URL.createObjectURL(file);
+    const img = document.getElementById(imgId);
+    img.src = url;
+    img.style.display = 'block';
+    document.getElementById(fallbackId).style.display = 'none';
+  }
+
+  function loadImgDiv(input, divId) {
+    const file = input.files[0];
+    if (!file) return;
+    const url = URL.createObjectURL(file);
+    const el = document.getElementById(divId);
+    el.classList.remove('placeholder');
+    el.innerHTML = '';
+    el.style.backgroundImage = `url(${url})`;
+    el.style.backgroundSize = 'cover';
+    el.style.backgroundPosition = 'center';
+  }
+
+  // ── Page navigation ──
+  let currentPage = 1;
+
+  function goTo(n) {
+    if (currentPage === 1 && n !== 1) {
+        audio.pause();
+        audio.currentTime = 0;
+    }
+    if (n === 1) {
+        audio.play().catch(() => {});
+    }
+    document.getElementById('page' + currentPage).classList.remove('active');
+    currentPage = n;
+    document.getElementById('page' + n).classList.add('active');
+
+    if (n === 1) {
+      playSong();
+      startPage1Animations();
+    }
+    }
+
+  // ── PAGE 1 ANIMATIONS ──
+  // img slides DOWN:  top goes from -400 → 260
+  // text slides UP:   top goes from 900  → 540
+
+  function startPage1Animations() {
+    const img  = document.getElementById('p1-img');
+    const text = document.getElementById('p1-text');
+
+    // reset
+    img.style.top  = '-400px';
+    text.style.top = '900px';
+
+    // small delay then animate
+    setTimeout(() => {
+      slideDown(img,  -400, 50);
+      slideUp(text,    900, 480);
+    }, 50);
+  }
+
+  function slideDown(el, current, target) {
+    if (current >= target) { el.style.top = target + 'px'; return; }
+    current += 5;
+    el.style.top = current + 'px';
+    setTimeout(() => slideDown(el, current, target), 10);
+  }
+
+  function slideUp(el, current, target) {
+    if (current <= target) { el.style.top = target + 'px'; return; }
+    current -= 5;
+    el.style.top = current + 'px';
+    setTimeout(() => slideUp(el, current, target), 10);
+  }
+
+  // ── POPUP ──
+  function showPopup() {
+    document.getElementById('popup-overlay').classList.add('show');
+  }
+  function closePopup() {
+    document.getElementById('popup-overlay').classList.remove('show');
+  }
+
+  // ── INIT: run page 1 animation on load ──
+  window.onload = function () {
+    startPage1Animations();
+     // Try autoplay, if blocked it will play on first click
+    document.addEventListener('click', function startAudio() {
+        if (currentPage === 1) audio.play().catch(() => {});
+        document.removeEventListener('click', startAudio);
+    }, { once: true });
+  };
+</script>
+</body>
+</html>
